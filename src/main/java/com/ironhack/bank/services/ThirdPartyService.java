@@ -1,13 +1,16 @@
 package com.ironhack.bank.services;
 
+import com.ironhack.bank.dtos.ThirdPartyDTO;
 import com.ironhack.bank.dtos.ThirdPartyOpDTO;
 import com.ironhack.bank.models.Account;
 import com.ironhack.bank.models.AccountStatement;
+import com.ironhack.bank.models.users.ThirdParty;
 import com.ironhack.bank.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 @Service
 public class ThirdPartyService {
@@ -28,7 +31,43 @@ public class ThirdPartyService {
     @Autowired
     SavingRepository savingRepository;
 
-    public void sendMoney(ThirdPartyOpDTO thirdPartyOpDTO) {
+
+    public ThirdParty createThirdParty(ThirdPartyDTO thirdPartyDTO) {
+
+
+
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 20;
+        Random random = new Random();
+
+        String generatedKey =  random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        ThirdParty thirdParty = new ThirdParty(thirdPartyDTO.getName(), generatedKey);
+
+        return thirdPartyRepository.save(thirdParty);
+    }
+
+
+    public String generateHashedKey() {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
+
+    public void sendMoney(ThirdPartyOpDTO thirdPartyOpDTO, String hashkey) {
 
         Long accountId = thirdPartyOpDTO.getAccountId();
         String key = thirdPartyOpDTO.getKey();
@@ -72,7 +111,7 @@ public class ThirdPartyService {
         }
 
         // Register the movement
-        AccountStatement statement = new AccountStatement(accountTransaction, amount, "Money income from Third-Party");
+        AccountStatement statement = new AccountStatement(accountTransaction, amount, "Money income from Third-Party: " + thirdPartyRepository.findByHashedKey(hashkey).get(0).getName());
         accountStatementRepository.save(statement);
 
         // Changes the account balance
@@ -81,7 +120,7 @@ public class ThirdPartyService {
         accountRepository.save(accountTransaction);
     }
 
-    public void withdrawMoney(ThirdPartyOpDTO thirdPartyOpDTO) {
+    public void withdrawMoney(ThirdPartyOpDTO thirdPartyOpDTO, String hashkey) {
 
         Long accountId = thirdPartyOpDTO.getAccountId();
         String key = thirdPartyOpDTO.getKey();
@@ -131,7 +170,7 @@ public class ThirdPartyService {
         }
 
         // Register the movement
-        AccountStatement statement = new AccountStatement(accountTransaction, amount.multiply(new BigDecimal("-1")), "Money withdraw from Third-Party");
+        AccountStatement statement = new AccountStatement(accountTransaction, amount.multiply(new BigDecimal("-1")), "Money withdraw from Third-Party: " + thirdPartyRepository.findByHashedKey(hashkey).get(0).getName());
         accountStatementRepository.save(statement);
 
         // Changes the account balance

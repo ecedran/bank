@@ -1,11 +1,13 @@
 package com.ironhack.bank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ironhack.bank.models.users.AccountHolder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "account")
@@ -28,6 +30,10 @@ public abstract class Account {
 
     private BigDecimal penaltyFee;
     private LocalDate creationDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<AccountStatement> accountStatements;
 
     // The penaltyFee for all accounts should be 40.
     public Account(BigDecimal balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {

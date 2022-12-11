@@ -21,6 +21,7 @@ public class Saving extends Account{
     private boolean minimumBalanceCheck;
 
 
+
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 

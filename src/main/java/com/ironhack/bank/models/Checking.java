@@ -27,6 +27,8 @@ public class Checking extends Account{
     private LocalDate maintenanceFeeNextPayment;
 
 
+
+
     // Checking accounts should have a minimumBalance of 250 and a monthlyMaintenanceFee of 12.
 
     public Checking(AccountHolder primaryOwner, AccountHolder secondaryOwner, String secretKey, BigDecimal balance) {

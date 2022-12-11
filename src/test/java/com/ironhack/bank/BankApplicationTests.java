@@ -56,6 +56,7 @@ class BankApplicationTests {
 	void contextLoads() {
 	}
 
+	/*
 	@BeforeEach
 	void setUp() {
 
@@ -89,5 +90,8 @@ class BankApplicationTests {
 
 		assertEquals(1, savingRepository.findAll().size());
 	}
+
+
+	 */
 
 }

@@ -26,6 +26,8 @@ public class CreditCard extends Account{
 
     private LocalDate interestRateNextPayment;
 
+
+
     // Constructor with default parameters
     public CreditCard(AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal balance) {
         super(balance, primaryOwner, secondaryOwner);

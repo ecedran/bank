@@ -26,8 +26,8 @@ public abstract class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Role> roles = new HashSet<>();
 
-    public User(String name, String password) {
-        this.username = name;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 

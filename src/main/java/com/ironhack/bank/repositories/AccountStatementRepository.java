@@ -12,4 +12,6 @@ public interface AccountStatementRepository extends JpaRepository<AccountStateme
 
     List<AccountStatement> findByAccount(Account account);
 
+    void deleteByAccount(Account account);
+
 }

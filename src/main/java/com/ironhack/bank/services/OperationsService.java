@@ -42,6 +42,12 @@ public class OperationsService {
             throw new IllegalArgumentException("The account number given didn't exist.");
         }
 
+        // Check if the account out and the account in are the same
+
+        if (accountNumberOut == accountNumberIn) {
+            throw new IllegalArgumentException("It's not possible to make a transfer to the same account.");
+        }
+
         Account accountOut = accountRepository.findById(accountNumberOut).get();
         Account accountIn = accountRepository.findById(accountNumberIn).get();
 
