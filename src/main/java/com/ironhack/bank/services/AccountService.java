@@ -162,6 +162,9 @@ public class AccountService {
         BigDecimal minimumBalance = savingDTO.getMinimumBalance();
         BigDecimal interestRate = savingDTO.getInterestRate();
 
+        // checks if the balance is over 0.
+        if(savingDTO.getBalance().compareTo(new BigDecimal("0")) < 0) throw new IllegalArgumentException("The Balance must be a number over 0");
+
         // checks if the given account numbers are valid
         accountHolderRepository.findById(id1).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no user with the given id for primary holder."));
         if (id2 != null) {
@@ -201,6 +204,9 @@ public class AccountService {
         BigDecimal interestRate = creditCardDTO.getInterestRate();
 
         BigDecimal creditLimit = creditCardDTO.getCreditLimit();
+
+        // checks if the balance is over 0.
+        if(creditCardDTO.getBalance().compareTo(new BigDecimal("0")) < 0) throw new IllegalArgumentException("The Balance must be a number over 0");
 
         // checks if the given account numbers are valid
         accountHolderRepository.findById(id1).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Primary holder: There is no user with the given id."));
@@ -251,6 +257,9 @@ public class AccountService {
         Long accountNumber;
 
         String name2 = null;
+
+        // checks if the balance is over 0.
+        if(checkingDTO.getBalance().compareTo(new BigDecimal("0")) < 0) throw new IllegalArgumentException("The Balance must be a number over 0");
 
         // Checks if the given account holders are valid
 

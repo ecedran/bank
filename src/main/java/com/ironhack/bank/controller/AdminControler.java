@@ -91,13 +91,19 @@ public class AdminControler {
     // localhost:8080/admin/delete-account?id=
     @DeleteMapping("/delete-account")
     public void deleteAccount(@RequestParam Long id) {
-        accountRepository.deleteById(id);
+        if (accountRepository.findById(id).isPresent()) {
+            accountRepository.deleteById(id);
+        } else throw new IllegalArgumentException("No account was found with the given account ID.");
+
     }
 
     // localhost:8080/admin/delete-third?id=
     @DeleteMapping("/delete-third")
     public void deleteThird(@RequestParam Long id) {
-        thirdPartyRepository.deleteById(id);
+        if (thirdPartyRepository.findById(id).isPresent()) {
+            thirdPartyRepository.deleteById(id);
+        } else throw new IllegalArgumentException("No third-party was found with the given ID.");
+
     }
 
     // localhost:8080/admin/change-account-info?id=

@@ -62,7 +62,7 @@ public class ScheduledServices {
 
         }
 
-    // CHECKS EVERY HOUR IF THE CHECKING ACCOUNTS ARE OVER THE MINIMUM BALANCE
+    // CHECKS EVERY HOUR IF THE CHECKING ACCOUNTS ARE UNDER THE MINIMUM BALANCE
 
     @Scheduled(cron = "0 1 * * * *")
     public void checkMinimumBalanceChecking() {
@@ -121,7 +121,7 @@ public class ScheduledServices {
 
     }
 
-    // CHECKS EVERY HOUR IF THE SAVING ACCOUNTS ARE OVER THE MINIMUM BALANCE
+    // CHECKS EVERY HOUR IF THE SAVING ACCOUNTS ARE UNDER THE MINIMUM BALANCE
 
     @Scheduled(cron = "0 30 * * * *")
     public void checkMinimumBalanceSaving() {

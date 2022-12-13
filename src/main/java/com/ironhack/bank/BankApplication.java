@@ -78,6 +78,7 @@ public class BankApplication implements CommandLineRunner {
 		admin = userRepository.save(admin);
 		roleRepository.save(new Role("ADMIN", admin));
 
+		/*
 
 		// create User 2
 		AccountHolder accountHolder1 = accountHolderRepository.save(new AccountHolder("Eric Cedran", "1234", LocalDate.of(1989,10,8), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España"), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España")));
@@ -108,6 +109,9 @@ public class BankApplication implements CommandLineRunner {
 		// New Transfer
 		TransferDTO transferDTO2 = new TransferDTO(1L, 2L, "Mikel Garmilla", new BigDecimal("1000"));
 		operationsService.transferMoney(transferDTO2);
+
+
+		 */
 
 /*
 		AccountHolder accountHolder1 = accountHolderRepository.save(new AccountHolder("Eric Cedran", "1234", LocalDate.of(2010,10,8), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España"), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España")));

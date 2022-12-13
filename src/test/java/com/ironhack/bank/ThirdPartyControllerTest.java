@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ironhack.bank.dtos.ThirdPartyOpDTO;
 import com.ironhack.bank.models.Checking;
 import com.ironhack.bank.models.users.AccountHolder;
+import com.ironhack.bank.models.users.ThirdParty;
 import com.ironhack.bank.models.users.embedded.Address;
 import com.ironhack.bank.repositories.*;
 import org.junit.jupiter.api.AfterEach;
@@ -64,7 +65,7 @@ public class ThirdPartyControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-/*
+
 
     @BeforeEach
     void setUp() {
@@ -94,13 +95,19 @@ public class ThirdPartyControllerTest {
 
         AccountHolder accountHolder1 = accountHolderRepository.save(new AccountHolder("Eric Cedran", "1234", LocalDate.of(1989,10,8), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España"), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España")));
         Checking checking1 = checkingRepository.save(new Checking(accountHolder1, "1234", new BigDecimal("10000")));
+        ThirdParty thirdParty = thirdPartyRepository.save(new ThirdParty("Amazon", "XfcWzVEeOnIugDEsGblx"));
 
 
         ThirdPartyOpDTO thirdPartyOpDTO = new ThirdPartyOpDTO(checking1.getAccountNumber(), "1234", new BigDecimal("1000"));
 
         String body = objectMapper.writeValueAsString(thirdPartyOpDTO);
 
-        MvcResult result = mockMvc.perform(post("/third-party/send-money").content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+        MvcResult result = mockMvc.perform(post("/third-party/send-money")
+                        .header("hashkey", "XfcWzVEeOnIugDEsGblx")
+                .content(body)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
 
         // The account recieved the money.
         assertEquals(new BigDecimal("11000.00"), accountRepository.findAll().get(accountRepository.findAll().size()-1).getBalance());
@@ -112,21 +119,21 @@ public class ThirdPartyControllerTest {
 
         AccountHolder accountHolder1 = accountHolderRepository.save(new AccountHolder("Eric Cedran", "1234", LocalDate.of(1989,10,8), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España"), new Address("Calle Balmes, 2", "Barcelona", "Barcelona", "08007","España")));
         Checking checking1 = checkingRepository.save(new Checking(accountHolder1, "1234", new BigDecimal("10000")));
+        ThirdParty thirdParty = thirdPartyRepository.save(new ThirdParty("Amazon", "XfcWzVEeOnIugDEsGblx"));
 
 
         ThirdPartyOpDTO thirdPartyOpDTO = new ThirdPartyOpDTO(checking1.getAccountNumber(), "1234", new BigDecimal("1000"));
 
         String body = objectMapper.writeValueAsString(thirdPartyOpDTO);
 
-        MvcResult result = mockMvc.perform(post("/third-party/withdraw-money").content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+        MvcResult result = mockMvc.perform(post("/third-party/withdraw-money")
+                .header("hashkey", "XfcWzVEeOnIugDEsGblx")
+                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
         // The account was withdrawn of the money.
         assertEquals(new BigDecimal("9000.00"), accountRepository.findAll().get(accountRepository.findAll().size()-1).getBalance());
 
     }
 
-
-
-*/
 
 }
